@@ -27,7 +27,13 @@ class BookmarksController extends AppController
         $this->set('_serialize', ['bookmarks']);
     }
 
-   
+    // get the bookmark collection for exporting
+
+    public function export() {
+        $bookmarks = $this->Bookmarks->find('all'); // find all the bookmarks
+        $this->set('bookmarks', $bookmarks);    // view layer now have access to the bookmarks
+    }
+
     /**
      * View method
      *
