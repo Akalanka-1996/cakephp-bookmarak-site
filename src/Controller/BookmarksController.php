@@ -27,8 +27,7 @@ class BookmarksController extends AppController
         $this->set('_serialize', ['bookmarks']);
     }
 
-    
-
+   
     /**
      * View method
      *
