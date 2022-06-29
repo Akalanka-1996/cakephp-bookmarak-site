@@ -30,7 +30,8 @@ class BookmarksController extends AppController
     // get the bookmark collection for exporting
 
     public function export($limit = 100) {
-        $bookmarks = $this->Bookmarks->find('all')->limit($limit); // find all the bookmarks
+        $bookmarks = $this->Bookmarks->find('all')->limit($limit) // find all the bookmarks
+            ->where(['user_id' => 1]);
         $this->set('bookmarks', $bookmarks);    // view layer now have access to the bookmarks
     }
 
