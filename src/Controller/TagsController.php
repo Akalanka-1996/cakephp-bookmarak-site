@@ -10,7 +10,9 @@ use App\Controller\AppController;
  */
 class TagsController extends AppController
 {
-    
+    public $paginate = [
+        'order' => ['Tags.name' => 'ASC'],
+    ];
 
     /**
      * Index method
