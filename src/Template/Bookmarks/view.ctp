@@ -1,3 +1,5 @@
+<?php use Cake\Utility\Hash; ?>
+<?php use Cake\Utility\Text; ?>
 <?php $this->assign('title', $bookmark->title); ?>
 <?php $this->prepend('title', 'View'); ?>
 <?php $this->append('title', 'Bookmark'); ?>
@@ -40,6 +42,10 @@
         <tr>
             <th><?= __('Modified') ?></th>
             <td><?= h($bookmark->modified) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Tags') ?></th>
+            <td><?= Text::toList(Hash::extract($bookmark, 'tags.{n}.name')) ?></td>
         </tr>
     </table>
     <div class="related">
