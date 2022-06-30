@@ -31,7 +31,12 @@ class BookmarksController extends AppController
 
     public function export($limit = 100) {
         $bookmarks = $this->Bookmarks->find('all')->limit($limit) // find all the bookmarks
-            ->where(['user_id' => 1]);
+            ->where(['user_id' => 1])
+            // ->contain(['Tags']);    // contain takes array of associte tables to include
+            // anonymous funtion
+            ->contain(['Tags' => function ($q) {
+                return $q->where(['Tags.name LIKE' => '%t%']);  // grab tags with letter t
+            }]);
         $this->set('bookmarks', $bookmarks);    // view layer now have access to the bookmarks
     }
 
