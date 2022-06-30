@@ -1,3 +1,6 @@
+<?php $this->assign('title', $bookmark->title); ?>
+<?php $this->prepend('title', 'View'); ?>
+<?php $this->append('title', 'Bookmark'); ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
