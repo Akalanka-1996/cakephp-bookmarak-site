@@ -24,7 +24,7 @@
         </tr>
         <tr>
             <th><?= __('Url') ?></th>
-            <td><?= h($bookmark->url) ?></td>
+            <td><?= $this->element('Bookmarks/url', ['bookmark' => $bookmark]) ?></td>
         </tr>
         <tr>
             <th><?= __('Id') ?></th>
