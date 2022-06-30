@@ -31,4 +31,11 @@ class Bookmark extends Entity
         '*' => true,
         'id' => false,
     ];
+
+    // get number of tags associated with a bookmarak
+
+    public function numberOfTags()
+    {
+        return count($this->tags);
+    }
 }
