@@ -11,6 +11,15 @@ use App\Controller\AppController;
 class BookmarksController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->loadComponent('Validate');
+
+    
+    }
+
     /**
      * Index method
      *
@@ -18,6 +27,10 @@ class BookmarksController extends AppController
      */
     public function index()
     {
+        // calling flash component in bookmarkscontroller
+        // $this->Flash->default('default');
+        // $this->Flash->error('error');
+        // $this->viewBuilder()->layout('ajax');
         $this->paginate = [
             'contain' => ['Users', 'Tags']
         ];
@@ -29,7 +42,9 @@ class BookmarksController extends AppController
 
     // get the bookmark collection for exporting
 
+    /*
     public function export($limit = 100) {
+        $limit = $this->Validate-> validLimit($limit, 100);
         $bookmarks = $this->Bookmarks->find('all')->limit($limit) // find all the bookmarks
             ->where(['user_id' => 1])
             // ->contain(['Tags']);    // contain takes array of associte tables to include
@@ -38,6 +53,17 @@ class BookmarksController extends AppController
                 return $q->where(['Tags.name LIKE' => '%t%']);  // grab tags with letter t
             }]);
         $this->set('bookmarks', $bookmarks);    // view layer now have access to the bookmarks
+    }
+    */
+
+    public function export($limit = 100) {
+        $limit = $this->Validate->validLimit($limit, 100);
+        $bookmarks = $this->Bookmarks->find('all')->limit($limit)
+            ->where(['user_id' => 1])
+            ->contain(['Tags' => function ($q) {
+                return $q->where(['Tags.name LIKE' => '%t%']);
+            }]);
+        $this->set('bookmarks', $bookmarks);
     }
 
     /**
