@@ -10,14 +10,11 @@ use App\Controller\AppController;
  */
 class BookmarksController extends AppController
 {
-
     public function initialize()
     {
         parent::initialize();
 
         $this->loadComponent('Validate');
-
-    
     }
 
     /**
@@ -27,10 +24,9 @@ class BookmarksController extends AppController
      */
     public function index()
     {
-        // calling flash component in bookmarkscontroller
         // $this->Flash->default('default');
         // $this->Flash->error('error');
-        // $this->viewBuilder()->layout('ajax');
+        //$this->viewBuilder()->layout('ajax');
         $this->paginate = [
             'contain' => ['Users', 'Tags']
         ];
@@ -39,22 +35,6 @@ class BookmarksController extends AppController
         $this->set(compact('bookmarks'));
         $this->set('_serialize', ['bookmarks']);
     }
-
-    // get the bookmark collection for exporting
-
-    /*
-    public function export($limit = 100) {
-        $limit = $this->Validate-> validLimit($limit, 100);
-        $bookmarks = $this->Bookmarks->find('all')->limit($limit) // find all the bookmarks
-            ->where(['user_id' => 1])
-            // ->contain(['Tags']);    // contain takes array of associte tables to include
-            // anonymous funtion
-            ->contain(['Tags' => function ($q) {
-                return $q->where(['Tags.name LIKE' => '%t%']);  // grab tags with letter t
-            }]);
-        $this->set('bookmarks', $bookmarks);    // view layer now have access to the bookmarks
-    }
-    */
 
     public function export($limit = 100) {
         $limit = $this->Validate->validLimit($limit, 100);
@@ -65,6 +45,82 @@ class BookmarksController extends AppController
                 return $q->where(['Tags.name LIKE' => '%t%']);
             }]);
         $this->set('bookmarks', $bookmarks);
+    }
+
+        public function collectionTest()
+    {
+        $this->autoRender = false;
+
+        $bookmarks = $this->Bookmarks
+            ->find('list');
+
+        debug("Each");
+        $bookmarks->each(function ($value, $key) {
+            echo "Element $key: $value";
+        });
+
+        $bookmarks = $this->Bookmarks
+            ->find('all')
+            ->contain([
+                'Users', 'Tags',
+            ]);
+
+        $collection = $bookmarks->extract('title');
+        debug("Extract:title");
+        debug($collection);
+        debug($collection->toArray());
+
+        $collection = $bookmarks->extract(function ($bookmark) {
+            return $bookmark->user->id . ', ' . $bookmark->user->name;
+        });
+        debug("Extract:callback");
+        debug($collection);
+        debug($collection->toArray());
+
+        $collection = $bookmarks->filter(function ($bookmark, $key) {
+            return $bookmark->user->id === 1;
+        });
+        debug("Filter:callback");
+        debug($collection);
+        debug($collection->toArray());
+
+        $collection = $bookmarks->reject(function ($bookmark, $key) {
+            return $bookmark->user->id === 1;
+        });
+        debug("Reject:callback");
+        debug($collection);
+        debug($collection->toArray());
+
+        $boolResult = $bookmarks->every(function ($bookmark, $key) {
+            return $bookmark->user->id === 1;
+        });
+        debug("Every:callback");
+        debug($boolResult);
+
+        $boolResult = $bookmarks->some(function ($bookmark, $key) {
+            return $bookmark->user->id === 1;
+        });
+        debug("Some:callback");
+        debug($boolResult);
+
+        $minResult = $bookmarks->min(function ($bookmark) {
+            return count($bookmark->tags);
+        });
+        debug("Min:callback");
+        debug($minResult);
+
+        $maxResult = $bookmarks->max(function ($bookmark) {
+            return count($bookmark->tags);
+        });
+        debug("Max:callback");
+        debug($maxResult);
+
+        $countByResult = $bookmarks->countBy(function ($bookmark) {
+            return (count($bookmark->tags) == 1) ? 'One Tag' : 'More Than One Tag';
+        });
+        debug("CountBy:callback");
+        debug($countByResult);
+        debug($countByResult->toArray());
     }
 
     /**
