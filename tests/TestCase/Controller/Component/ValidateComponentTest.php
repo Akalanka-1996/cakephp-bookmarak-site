@@ -51,4 +51,12 @@ class ValidateComponentTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    public function testValidLimit()
+    {
+        $output = $this->Validate->validLimit(1,0);
+        $this->assertEquals(1, $output);
+        $output = $this->Validate->validLimit('u',0);
+        $this->assertEquals(0, $output);
+    }
 }
