@@ -10,6 +10,12 @@ use App\Controller\AppController;
  */
 class UsersController extends AppController
 {
+    public function isAuthorized($user)
+    {
+        // deny or allow particular user to visit userslist
+        return ($user['email'] == 'john@localhost.com');
+    }
+
     public function login()
     {
         if ($this->request->is('post')) {

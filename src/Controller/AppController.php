@@ -46,7 +46,8 @@ class AppController extends Controller
         $this->loadComponent('Auth', [
             'authenticate' => [
                 'Form' => ['fields' => ['username' => 'email']]
-            ]
+            ],
+            'authorize' => ['Controller'],
         ]);
     }
 
@@ -64,4 +65,13 @@ class AppController extends Controller
             $this->set('_serialize', true);
         }
     }
+
+    // allow or deny access to already logged in users
+
+    public function isAuthorized($user)
+    {
+        return true;
+    }
+
+
 }
