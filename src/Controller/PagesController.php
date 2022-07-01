@@ -15,8 +15,10 @@
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+
 
 /**
  * Static content controller
@@ -27,6 +29,11 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class PagesController extends AppController
 {
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->allow('display');  // allow is the method to allow acess for unauthenticated users
+    }
 
     /**
      * Displays a view
