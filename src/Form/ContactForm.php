@@ -3,6 +3,7 @@ namespace App\Form;
 
 use Cake\Form\Form;
 use Cake\Form\Schema;
+use Cake\Mailer\Email;
 use Cake\Validation\Validator;
 
 /**
@@ -44,6 +45,12 @@ class ContactForm extends Form
      */
     protected function _execute(array $data)
     {
+        $email = new Email();
+        $email->from('app@domain.com', 'Bookmarks')
+            ->to('me@domain.com', 'Me')
+            ->template('default', 'default')
+            ->viewVars(['data' => $data])
+            ->send();
         return true;
     }
 }
