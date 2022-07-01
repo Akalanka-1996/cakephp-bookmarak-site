@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\Log\LogTrait;
 use Cake\ORM\Entity;
 
 /**
@@ -17,7 +18,7 @@ use Cake\ORM\Entity;
  */
 class User extends Entity
 {
-
+    use LogTrait;
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -35,6 +36,12 @@ class User extends Entity
     protected function _getName()
     {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    protected function _setPassword($password)
+    {
+        $this->log('User changing password', 'debug');
+        return $password;
     }
 
     /**
